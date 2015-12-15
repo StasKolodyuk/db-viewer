@@ -2,6 +2,7 @@ package by.bsu.kolodyuk.form;
 
 
 import by.bsu.kolodyuk.ScreensConfig;
+import by.bsu.kolodyuk.model.Session;
 import by.bsu.kolodyuk.model.User;
 import by.bsu.kolodyuk.model.UserType;
 import by.bsu.kolodyuk.service.UserService;
@@ -14,8 +15,8 @@ import javax.annotation.Resource;
 
 public class RegisterForm extends NavigableForm {
 
-    public RegisterForm(ScreensConfig screens) {
-        super(screens);
+    public RegisterForm(ScreensConfig screens, Session session) {
+        super(screens, session);
     }
 
     @FXML

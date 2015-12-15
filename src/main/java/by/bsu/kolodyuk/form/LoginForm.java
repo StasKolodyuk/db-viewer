@@ -2,6 +2,7 @@ package by.bsu.kolodyuk.form;
 
 
 import by.bsu.kolodyuk.ScreensConfig;
+import by.bsu.kolodyuk.model.Session;
 import by.bsu.kolodyuk.model.User;
 import by.bsu.kolodyuk.service.UserService;
 import javafx.event.ActionEvent;
@@ -13,8 +14,8 @@ import javax.annotation.Resource;
 
 public class LoginForm extends NavigableForm {
 
-    public LoginForm(ScreensConfig screens) {
-        super(screens);
+    public LoginForm(ScreensConfig screens, Session session) {
+        super(screens, session);
     }
 
     @FXML
@@ -29,8 +30,17 @@ public class LoginForm extends NavigableForm {
     @FXML
     public void onLoginButtonPressed(ActionEvent event) {
         User user = userService.getUser(loginField.getText(), passwordField.getText());
-        if(user != null) {
-            screens.toPostRequestPage();
+        if(user == null) return;
+        session.setUser(user);
+        switch(user.getUserType()) {
+            case SIMPLE:
+                screens.toPostRequestPage();
+                break;
+            case REFERENT:
+                screens.toReferentPage();
+                break;
+            case ADMIN:
+                screens.toPostRequestPage();
         }
     }
 

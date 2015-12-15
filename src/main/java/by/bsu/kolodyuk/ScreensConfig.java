@@ -1,6 +1,7 @@
 package by.bsu.kolodyuk;
 
 import by.bsu.kolodyuk.form.*;
+import by.bsu.kolodyuk.model.Session;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,6 +22,8 @@ public class ScreensConfig {
     private Stage stage;
     private Scene scene;
     private StackPane root;
+
+    private Session session = new Session();
 
     public void setPrimaryStage(Stage primaryStage) {
         this.stage = primaryStage;
@@ -46,7 +49,7 @@ public class ScreensConfig {
         toTop(getNode(registerForm(), "register.fxml"));
     }
 
-    public void toProfilePage() {
+    public void toReferentPage() {
         toTop(getNode(profileForm(), "profile.fxml"));
     }
 
@@ -57,25 +60,25 @@ public class ScreensConfig {
     @Bean
     @Scope("prototype")
     LoginForm loginForm() {
-        return new LoginForm(this);
+        return new LoginForm(this, session);
     }
 
     @Bean
     @Scope("prototype")
     RegisterForm registerForm() {
-        return new RegisterForm(this);
+        return new RegisterForm(this, session);
     }
 
     @Bean
     @Scope("prototype")
-    ProfileForm profileForm() {
-        return new ProfileForm(this);
+    ReferentForm profileForm() {
+        return new ReferentForm(this, session);
     }
 
     @Bean
     @Scope("prototype")
     PostRequestForm postRequestForm() {
-        return new PostRequestForm(this);
+        return new PostRequestForm(this, session);
     }
 
     private Node getNode(final NavigableForm form, String view) {

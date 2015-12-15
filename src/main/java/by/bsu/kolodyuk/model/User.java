@@ -7,7 +7,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long userId;
     private String firstName;
     private String lastName;
     private String login;
@@ -15,12 +15,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
