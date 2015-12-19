@@ -10,13 +10,19 @@
       <Label fx:id="statusLabel" alignment="CENTER" />
       <AnchorPane fx:id="formPane" prefHeight="286.0" prefWidth="600.0">
          <children>
-            <TextField fx:id="jobField" layoutX="59.0" layoutY="43.0" />
-            <TextField fx:id="salaryField" layoutX="59.0" layoutY="91.0" />
+            <TextField fx:id="moneyField" layoutX="59.0" layoutY="43.0" />
+            <TextField fx:id="interestField" layoutX="59.0" layoutY="91.0" />
             <TextArea fx:id="financialReportArea" layoutX="273.0" layoutY="42.0" prefHeight="185.0" prefWidth="306.0" />
-            <Label layoutX="59.0" layoutY="68.0" text="Salary" />
-            <Label layoutX="61.0" layoutY="21.0" text="Job" />
+            <Label layoutX="59.0" layoutY="68.0" prefHeight="17.0" prefWidth="130.0" text="Loan Interest (%)" />
+            <Label layoutX="61.0" layoutY="21.0" prefHeight="17.0" prefWidth="130.0" text="Money Amount to Loan" />
             <Label layoutX="273.0" layoutY="19.0" text="Financial Report" />
             <Button layoutX="430.0" layoutY="244.0" mnemonicParsing="false" onAction="#onSubmitRequestButtonPressed" prefHeight="25.0" prefWidth="149.0" text="Submit request" />
+            <TextField fx:id="timeField" layoutX="59.0" layoutY="134.0" />
+            <Label layoutX="61.0" layoutY="117.0" prefHeight="17.0" prefWidth="106.0" text="Loan Time (years)" />
+            <Label layoutX="61.0" layoutY="157.0" prefHeight="17.0" prefWidth="70.0" text="Job" />
+            <TextField fx:id="jobField" layoutX="59.0" layoutY="174.0" />
+            <TextField fx:id="salaryField" layoutX="59.0" layoutY="214.0" />
+            <Label layoutX="61.0" layoutY="197.0" prefHeight="17.0" prefWidth="70.0" text="Salary" />
          </children>
       </AnchorPane>
    </children>

@@ -11,16 +11,23 @@
             <children>
                 <VBox prefHeight="123.0" prefWidth="150.0">
                     <children>
+                  <Label fx:id="statusLabel" textFill="#e13131" />
                         <Label layoutX="178.0" layoutY="123.0" text="Login" />
                         <TextField fx:id="loginField" layoutX="178.0" layoutY="140.0" />
                         <Label layoutX="178.0" layoutY="165.0" text="Password" />
                         <PasswordField fx:id="passwordField" />
                         <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="198.0">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#onLoginButtonPressed" text="Log In" />
+                                <Button mnemonicParsing="false" onAction="#onLoginButtonPressed" text="Log In">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin></Button>
                                 <Button mnemonicParsing="false" onAction="#onRegisterButtonPressed" text="Register">
                                     <HBox.margin>
-                                        <Insets left="5.0" />
+                                        <Insets left="5.0" top="5.0" />
                                     </HBox.margin>
                                 </Button>
                             </children>

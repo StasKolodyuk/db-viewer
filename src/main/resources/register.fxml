@@ -11,6 +11,7 @@
          <children>
             <VBox prefHeight="206.0" prefWidth="150.0">
                <children>
+                  <Label fx:id="statusLabel" textFill="#d72828" />
                   <Label layoutX="178.0" layoutY="123.0" text="Login" />
                   <TextField fx:id="loginField" layoutX="178.0" layoutY="140.0" />
                   <Label prefHeight="17.0" prefWidth="77.0" text="First Name" />
@@ -23,7 +24,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onRegisterButtonPressed" text="Register">
                            <HBox.margin>
-                              <Insets left="5.0" />
+                              <Insets left="5.0" top="5.0" />
                            </HBox.margin>
                         </Button>
                      </children>

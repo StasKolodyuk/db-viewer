@@ -8,6 +8,7 @@ import by.bsu.kolodyuk.model.UserType;
 import by.bsu.kolodyuk.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -19,6 +20,8 @@ public class RegisterForm extends NavigableForm {
         super(screens, session);
     }
 
+    @FXML
+    private Label statusLabel;
     @FXML
     private TextField loginField;
     @FXML
@@ -40,9 +43,12 @@ public class RegisterForm extends NavigableForm {
         user.setLogin(loginField.getText());
         user.setPassword(passwordField.getText());
         user.setUserType(UserType.SIMPLE);
-        userService.addUser(user);
+        if(userService.addUser(user)) {
+            screens.toLoginPage();
+        } else {
+            statusLabel.setText("Such user already exists !!!");
+        }
 
-        screens.toLoginPage();
     }
 
 }

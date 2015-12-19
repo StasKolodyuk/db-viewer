@@ -8,10 +8,10 @@
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.bsu.kolodyuk.form.LoginForm">
    <children>
       <Label fx:id="statusLabel" />
-      <AnchorPane prefHeight="269.0" prefWidth="600.0">
+      <AnchorPane prefHeight="349.0" prefWidth="600.0">
          <children>
+            <Accordion fx:id="financialInfoAccordion" layoutY="29.0" prefHeight="215.0" prefWidth="563.0" />
             <Button layoutX="274.0" layoutY="17.0" mnemonicParsing="false" onAction="#onValidateReportsButtonPressed" text="Validate Reports" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" />
-            <Accordion fx:id="financialInfoAccordion" layoutY="17.0" prefHeight="147.0" prefWidth="563.0" />
          </children>
       </AnchorPane>
    </children>

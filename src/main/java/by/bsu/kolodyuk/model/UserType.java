@@ -2,6 +2,6 @@ package by.bsu.kolodyuk.model;
 
 public enum UserType {
 
-    SIMPLE, ADMIN, REFERENT;
+    SIMPLE, REFERENT, BANK_OFFICER, INSPECTOR;
 
 }

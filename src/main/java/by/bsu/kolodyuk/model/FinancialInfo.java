@@ -13,12 +13,15 @@ public class FinancialInfo {
     @GeneratedValue
     private Long financialInfoId;
     private Long userId;
+    private Long moneyAmount;
+    private Integer timeRange;
+    private Integer interestPercentage;
     private String job;
     private Integer salary;
     @Column(length = 2000)
     private String financialReport;
-    @Column(nullable = true)
     private Boolean validated;
+    private Boolean confirmed;
 
     public Long getFinancialInfoId() {
         return financialInfoId;
@@ -34,6 +37,30 @@ public class FinancialInfo {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getMoneyAmount() {
+        return moneyAmount;
+    }
+
+    public void setMoneyAmount(Long moneyAmount) {
+        this.moneyAmount = moneyAmount;
+    }
+
+    public Integer getTimeRange() {
+        return timeRange;
+    }
+
+    public void setTimeRange(Integer timeRange) {
+        this.timeRange = timeRange;
+    }
+
+    public Integer getInterestPercentage() {
+        return interestPercentage;
+    }
+
+    public void setInterestPercentage(Integer interestPercentage) {
+        this.interestPercentage = interestPercentage;
     }
 
     public String getJob() {
@@ -68,11 +95,22 @@ public class FinancialInfo {
         this.validated = validated;
     }
 
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
     @Override
-    public String toString() {
-        return "UserId: " + userId + "\n" +
+    public String toString()  {
+        return "User ID: " + userId + "\n" +
+               "Loan Money Amount: " + moneyAmount + "\n" +
+               "Loan Interest: " + interestPercentage + "%" + "\n" +
+               "Loan Time: " + timeRange + " year(s)" + "\n" +
                "Job: " + job + "\n" +
                "Salary: " + salary + "\n" +
-               "Financial Report: " + financialReport;
+               "Financial Report: " + financialReport + "\n";
     }
 }

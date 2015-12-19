@@ -7,6 +7,7 @@ import by.bsu.kolodyuk.model.User;
 import by.bsu.kolodyuk.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -22,6 +23,8 @@ public class LoginForm extends NavigableForm {
     private TextField loginField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Label statusLabel;
 
     @Resource
     private UserService userService;
@@ -30,8 +33,14 @@ public class LoginForm extends NavigableForm {
     @FXML
     public void onLoginButtonPressed(ActionEvent event) {
         User user = userService.getUser(loginField.getText(), passwordField.getText());
-        if(user == null) return;
-        session.setUser(user);
+        if(user == null) {
+            statusLabel.setText("Wrong Login or Password !!!");
+            loginField.clear();
+            passwordField.clear();
+            return;
+        }
+        session.setUserId(user.getUserId());
+        session.setUserType(user.getUserType());
         switch(user.getUserType()) {
             case SIMPLE:
                 screens.toPostRequestPage();
@@ -39,8 +48,12 @@ public class LoginForm extends NavigableForm {
             case REFERENT:
                 screens.toReferentPage();
                 break;
-            case ADMIN:
-                screens.toPostRequestPage();
+            case BANK_OFFICER:
+                screens.toBankOfficerPage();
+                break;
+            case INSPECTOR:
+                screens.toInspectorPage();
+                break;
         }
     }
 

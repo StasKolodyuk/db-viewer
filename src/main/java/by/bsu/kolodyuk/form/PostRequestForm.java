@@ -4,7 +4,7 @@ package by.bsu.kolodyuk.form;
 import by.bsu.kolodyuk.ScreensConfig;
 import by.bsu.kolodyuk.model.FinancialInfo;
 import by.bsu.kolodyuk.model.Session;
-import by.bsu.kolodyuk.repository.FinancialInfoRepository;
+import by.bsu.kolodyuk.service.FinancialInfoService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +29,12 @@ public class PostRequestForm extends NavigableForm implements Initializable {
     @FXML
     private Label statusLabel;
     @FXML
+    private TextField moneyField;
+    @FXML
+    private TextField interestField;
+    @FXML
+    private TextField timeField;
+    @FXML
     private TextField jobField;
     @FXML
     private TextField salaryField;
@@ -36,13 +42,13 @@ public class PostRequestForm extends NavigableForm implements Initializable {
     private TextArea financialReportArea;
 
     @Resource
-    private FinancialInfoRepository financialInfoRepository;
+    private FinancialInfoService financialInfoService;
 
     private FinancialInfo financialInfo;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        financialInfo = financialInfoRepository.findByUserId(session.getUser().getUserId());
+        financialInfo = financialInfoService.getFinancialInfo(session.getUserId());
         if(financialInfo != null) {
             if(financialInfo.getValidated() == null) {
                 statusLabel.setText("Your Financial Info is waiting for validation");
@@ -51,6 +57,9 @@ public class PostRequestForm extends NavigableForm implements Initializable {
             } else {
                 statusLabel.setText("Your Financial Info failed validation. Please Edit");
             }
+            moneyField.setText(financialInfo.getMoneyAmount().toString());
+            interestField.setText(financialInfo.getInterestPercentage().toString());
+            timeField.setText(financialInfo.getTimeRange().toString());
             jobField.setText(financialInfo.getJob());
             salaryField.setText(financialInfo.getSalary().toString());
             financialReportArea.setText(financialInfo.getFinancialReport());
@@ -64,13 +73,20 @@ public class PostRequestForm extends NavigableForm implements Initializable {
 
     @FXML
     public void onSubmitRequestButtonPressed(ActionEvent event) {
+        processFinancialInfo();
+        screens.toPostRequestPage();
+    }
+
+    private void processFinancialInfo() {
         FinancialInfo financial = financialInfo != null ? financialInfo : new FinancialInfo();
-        financial.setUserId(session.getUser().getUserId());
+        financial.setUserId(session.getUserId());
+        financial.setMoneyAmount(Long.parseLong(moneyField.getText()));
+        financial.setInterestPercentage(Integer.parseInt(interestField.getText()));
+        financial.setTimeRange(Integer.parseInt(timeField.getText()));
         financial.setJob(jobField.getText());
         financial.setSalary(Integer.parseInt(salaryField.getText()));
         financial.setFinancialReport(financialReportArea.getText());
         financial.setValidated(null);
-        financialInfoRepository.save(financial);
-        screens.toPostRequestPage();
+        financialInfoService.upsertFinancialInfo(financial);
     }
 }

@@ -2,13 +2,31 @@ package by.bsu.kolodyuk.model;
 
 public class Session {
 
-    private User user;
+    private Long userId;
+    private UserType userType;
+    private Long userUnderValidationId;
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public Long getUserUnderValidationId() {
+        return userUnderValidationId;
+    }
+
+    public void setUserUnderValidationId(Long userUnderValidationId) {
+        this.userUnderValidationId = userUnderValidationId;
     }
 }

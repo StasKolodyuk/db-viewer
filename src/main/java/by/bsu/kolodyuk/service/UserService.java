@@ -16,8 +16,14 @@ public class UserService {
         return userRepository.findByLoginAndPassword(login, password);
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
+    public boolean addUser(User user) {
+        User existing = userRepository.findByLogin(user.getLogin());
+        if(existing == null) {
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

@@ -50,12 +50,25 @@ public class ScreensConfig {
     }
 
     public void toReferentPage() {
-        toTop(getNode(profileForm(), "profile.fxml"));
+        toTop(getNode(referentForm(), "referent.fxml"));
     }
 
     public void toPostRequestPage() {
         toTop(getNode(postRequestForm(), "postRequest.fxml"));
     }
+
+    public void toCreditHistoryPage() {
+        toTop(getNode(creditHistoryForm(), "history.fxml"));
+    }
+
+    public void toBankOfficerPage() {
+        toTop(getNode(bankOfficerForm(), "bankOfficer.fxml"));
+    }
+
+    public void toInspectorPage() {
+        toTop(getNode(inspectorForm(), "inspector.fxml"));
+    }
+
 
     @Bean
     @Scope("prototype")
@@ -71,7 +84,7 @@ public class ScreensConfig {
 
     @Bean
     @Scope("prototype")
-    ReferentForm profileForm() {
+    ReferentForm referentForm() {
         return new ReferentForm(this, session);
     }
 
@@ -79,6 +92,24 @@ public class ScreensConfig {
     @Scope("prototype")
     PostRequestForm postRequestForm() {
         return new PostRequestForm(this, session);
+    }
+
+    @Bean
+    @Scope("prototype")
+    CreditHistoryForm creditHistoryForm() {
+        return new CreditHistoryForm(this, session);
+    }
+
+    @Bean
+    @Scope("prototype")
+    BankOfficerForm bankOfficerForm() {
+        return new BankOfficerForm(this, session);
+    }
+
+    @Bean
+    @Scope("prototype")
+    InspectorForm inspectorForm() {
+        return new InspectorForm(this, session);
     }
 
     private Node getNode(final NavigableForm form, String view) {

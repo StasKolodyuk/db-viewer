@@ -2,15 +2,14 @@ package by.bsu.kolodyuk.form;
 
 
 import by.bsu.kolodyuk.ScreensConfig;
-import by.bsu.kolodyuk.model.FinancialInfo;
+import by.bsu.kolodyuk.model.AccountInfo;
 import by.bsu.kolodyuk.model.Session;
-import by.bsu.kolodyuk.repository.FinancialInfoRepository;
-import by.bsu.kolodyuk.service.FinancialInfoService;
-import javafx.collections.FXCollections;
+import by.bsu.kolodyuk.service.AccountInfoService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 
 import javax.annotation.Resource;
@@ -18,45 +17,47 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ReferentForm extends NavigableForm implements Initializable {
+public class BankOfficerForm extends NavigableForm implements Initializable {
 
-    public ReferentForm(ScreensConfig screens, Session session) {
+    public BankOfficerForm(ScreensConfig screens, Session session) {
         super(screens, session);
     }
 
     @FXML
     private Label statusLabel;
     @FXML
-    private Accordion financialInfoAccordion;
-    @FXML
-    private List<FinancialInfo> toValidate;
+    private Accordion accountInfoAccordion;
 
     @Resource
-    private FinancialInfoService financialInfoService;
+    private AccountInfoService accountInfoService;
+
+    private List<AccountInfo> toValidate;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        toValidate = financialInfoService.getNotValidatedFinancialInfos();
+        toValidate = accountInfoService.getNotValidatedAccountInfos();
         if(toValidate.isEmpty()) {
-            statusLabel.setText("No Financial Reports to Validate");
+            statusLabel.setText("No Account Infos to Validate");
         } else {
-            statusLabel.setText("Validate the following Financial Reports");
+            statusLabel.setText("Validate the following Account Infos");
         }
-        toValidate.forEach(f -> financialInfoAccordion.getPanes().add(createTitledPane(f)));
+        toValidate.forEach(a -> accountInfoAccordion.getPanes().add(createTitledPane(a)));
     }
 
     @FXML
-    public void onValidateReportsButtonPressed(ActionEvent event) {
-        financialInfoService.updateFinancialInfos(toValidate);
-        screens.toReferentPage();
+    public void onValidateAccountInfosButtonPressed(ActionEvent event) {
+        accountInfoService.updateAccountInfos(toValidate);
+        screens.toBankOfficerPage();
     }
 
-    private TitledPane createTitledPane(FinancialInfo financialInfo) {
+    private TitledPane createTitledPane(AccountInfo accountInfo) {
         TitledPane titledPane = new TitledPane();
-        titledPane.setText("UserId: " + financialInfo.getUserId());
+        titledPane.setText("User ID: " + accountInfo.getUserId());
+
+        VBox vBox = new VBox();
         TextFlow textFlow = new TextFlow();
 
-        Label label = new Label(financialInfo.toString());
+        Label label = new Label(accountInfo.toString());
         label.setWrapText(true);
         textFlow.getChildren().add(label);
 
@@ -67,9 +68,9 @@ public class ReferentForm extends NavigableForm implements Initializable {
         isValidCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue == true) {
                 rejectCheckBox.setSelected(false);
-                financialInfo.setValidated(true);
+                accountInfo.setValidated(true);
             } else {
-                financialInfo.setValidated(null);
+                accountInfo.setValidated(null);
             }
         });
         textFlow.getChildren().add(isValidCheckBox);
@@ -78,21 +79,23 @@ public class ReferentForm extends NavigableForm implements Initializable {
         rejectCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == true) {
                 isValidCheckBox.setSelected(false);
-                financialInfo.setValidated(false);
+                accountInfo.setValidated(false);
             } else {
-                financialInfo.setValidated(null);
+                accountInfo.setValidated(null);
             }
         });
         textFlow.getChildren().add(rejectCheckBox);
 
         Button creditHistoryButton = new Button("View Credit History");
         creditHistoryButton.setOnAction(e -> {
-            session.setUserUnderValidationId(financialInfo.getUserId());
+            session.setUserUnderValidationId(accountInfo.getUserId());
             screens.toCreditHistoryPage();
         });
-        textFlow.getChildren().add(creditHistoryButton);
 
-        titledPane.setContent(textFlow);
+        vBox.getChildren().add(textFlow);
+        vBox.getChildren().add(creditHistoryButton);
+
+        titledPane.setContent(vBox);
         return titledPane;
     }
 }
