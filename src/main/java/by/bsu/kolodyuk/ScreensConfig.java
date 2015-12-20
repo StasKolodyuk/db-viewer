@@ -69,6 +69,14 @@ public class ScreensConfig {
         toTop(getNode(inspectorForm(), "inspector.fxml"));
     }
 
+    public void toConditionsPage() {
+        toTop(getNode(conditionsForm(), "conditions.fxml"));
+    }
+
+    public void toResultPage() {
+        toTop(getNode(resultForm(), "results.fxml"));
+    }
+
 
     @Bean
     @Scope("prototype")
@@ -110,6 +118,18 @@ public class ScreensConfig {
     @Scope("prototype")
     InspectorForm inspectorForm() {
         return new InspectorForm(this, session);
+    }
+
+    @Bean
+    @Scope("prototype")
+    ConditionsForm conditionsForm() {
+        return new ConditionsForm(this, session);
+    }
+
+    @Bean
+    @Scope("prototype")
+    ResultForm resultForm() {
+        return new ResultForm(this, session);
     }
 
     private Node getNode(final NavigableForm form, String view) {

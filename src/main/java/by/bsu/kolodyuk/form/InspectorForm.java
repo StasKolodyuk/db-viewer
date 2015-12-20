@@ -6,7 +6,7 @@ import by.bsu.kolodyuk.model.FullInfo;
 import by.bsu.kolodyuk.model.Session;
 import by.bsu.kolodyuk.service.AccountInfoService;
 import by.bsu.kolodyuk.service.CreditInfoService;
-import by.bsu.kolodyuk.service.FinancialInfoService;
+import by.bsu.kolodyuk.service.CreditRequestService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
@@ -34,7 +34,7 @@ public class InspectorForm extends NavigableForm implements Initializable {
     private Label statusLabel;
 
     @Resource
-    private FinancialInfoService financialInfoService;
+    private CreditRequestService creditRequestService;
     @Resource
     private CreditInfoService creditInfoService;
     @Resource
@@ -42,10 +42,14 @@ public class InspectorForm extends NavigableForm implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if(accountInfoService.getValidatedAccountInfos() == null) {
+            statusLabel.setText("No credit requests to analyze");
+            return;
+        }
         List<FullInfo> fullInfos = accountInfoService.getValidatedAccountInfos().stream()
-                .map(a -> new FullInfo(financialInfoService.getFinancialInfo(a.getUserId()), a,
+                .map(a -> new FullInfo(creditRequestService.getCreditRequest(a.getUserId()), a,
                         creditInfoService.getCreditHistory(a.getUserId())))
-                .filter(f -> f.getFinancialInfo().getConfirmed() == null)
+                .filter(f -> f.getCreditRequest().getConfirmed() == null)
                 .collect(Collectors.toList());
 
         if(fullInfos != null && !fullInfos.isEmpty()) {
@@ -65,11 +69,14 @@ public class InspectorForm extends NavigableForm implements Initializable {
         textFlow.getChildren().add(label);
         vBox.getChildren().add(textFlow);
         Button determineConditionsButton = new Button("Determine Conditions");
-        //determineConditionsButton.setOnAction(e -> screens.toConditionsPage());
+        determineConditionsButton.setOnAction(e -> {
+            session.setUserUnderValidationId(fullInfo.getAccountInfo().getUserId());
+            screens.toConditionsPage();
+        });
         Button rejectCredit = new Button("Reject Credit");
         rejectCredit.setOnAction(e ->  {
-            fullInfo.getFinancialInfo().setConfirmed(false);
-            financialInfoService.upsertFinancialInfo(fullInfo.getFinancialInfo());
+            fullInfo.getCreditRequest().setConfirmed(false);
+            creditRequestService.upsertCreditRequest(fullInfo.getCreditRequest());
             screens.toInspectorPage();
         });
         vBox.getChildren().addAll(determineConditionsButton, rejectCredit);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.bsu.kolodyuk.form.LoginForm">
+   <children>
+      <Label fx:id="statusLabel" alignment="CENTER" />
+      <AnchorPane fx:id="formPane" prefHeight="286.0" prefWidth="600.0">
+         <children>
+            <TextField fx:id="moneyField" layoutX="59.0" layoutY="43.0" />
+            <TextField fx:id="interestField" layoutX="59.0" layoutY="91.0" />
+            <TextArea fx:id="conditionsArea" layoutX="273.0" layoutY="42.0" prefHeight="185.0" prefWidth="306.0" />
+            <Label layoutX="59.0" layoutY="68.0" prefHeight="17.0" prefWidth="130.0" text="Loan Interest (%)" />
+            <Label layoutX="61.0" layoutY="21.0" prefHeight="17.0" prefWidth="130.0" text="Money Amount to Loan" />
+            <Label layoutX="273.0" layoutY="19.0" text="Conditions Description" />
+            <Button layoutX="430.0" layoutY="244.0" mnemonicParsing="false" onAction="#onPostConditionsButtonPressed" prefHeight="25.0" prefWidth="149.0" text="Post Conditions" />
+            <TextField fx:id="timeField" layoutX="59.0" layoutY="134.0" />
+            <Label layoutX="61.0" layoutY="117.0" prefHeight="17.0" prefWidth="106.0" text="Loan Time (years)" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

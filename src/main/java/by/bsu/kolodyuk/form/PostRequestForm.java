@@ -2,9 +2,11 @@ package by.bsu.kolodyuk.form;
 
 
 import by.bsu.kolodyuk.ScreensConfig;
-import by.bsu.kolodyuk.model.FinancialInfo;
+import by.bsu.kolodyuk.model.CreditConditions;
+import by.bsu.kolodyuk.model.CreditRequest;
 import by.bsu.kolodyuk.model.Session;
-import by.bsu.kolodyuk.service.FinancialInfoService;
+import by.bsu.kolodyuk.service.CreditConditionsService;
+import by.bsu.kolodyuk.service.CreditRequestService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,28 +44,31 @@ public class PostRequestForm extends NavigableForm implements Initializable {
     private TextArea financialReportArea;
 
     @Resource
-    private FinancialInfoService financialInfoService;
+    private CreditRequestService creditRequestService;
 
-    private FinancialInfo financialInfo;
+    private CreditRequest creditRequest;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        financialInfo = financialInfoService.getFinancialInfo(session.getUserId());
-        if(financialInfo != null) {
-            if(financialInfo.getValidated() == null) {
+        creditRequest = creditRequestService.getCreditRequest(session.getUserId());
+        if(creditRequest != null) {
+            if(creditRequest.getValidated() == null) {
                 statusLabel.setText("Your Financial Info is waiting for validation");
-            } else if (financialInfo.getValidated() == true) {
+            } else if (creditRequest.getValidated() == true) {
                 statusLabel.setText("Your Financial Info passed validation");
             } else {
                 statusLabel.setText("Your Financial Info failed validation. Please Edit");
             }
-            moneyField.setText(financialInfo.getMoneyAmount().toString());
-            interestField.setText(financialInfo.getInterestPercentage().toString());
-            timeField.setText(financialInfo.getTimeRange().toString());
-            jobField.setText(financialInfo.getJob());
-            salaryField.setText(financialInfo.getSalary().toString());
-            financialReportArea.setText(financialInfo.getFinancialReport());
-            if(financialInfo.getValidated() == null || financialInfo.getValidated() == true) {
+            if(creditRequest.getConfirmed() != null && creditRequest.getConfirmed() == false) {
+                statusLabel.setText("Your Credit Request was rejected");
+            }
+            moneyField.setText(creditRequest.getMoneyAmount().toString());
+            interestField.setText(creditRequest.getInterestPercentage().toString());
+            timeField.setText(creditRequest.getTimeRange().toString());
+            jobField.setText(creditRequest.getJob());
+            salaryField.setText(creditRequest.getSalary().toString());
+            financialReportArea.setText(creditRequest.getFinancialReport());
+            if(creditRequest.getValidated() == null || creditRequest.getValidated() == true) {
                 formPane.setDisable(true);
             }
         } else {
@@ -73,20 +78,20 @@ public class PostRequestForm extends NavigableForm implements Initializable {
 
     @FXML
     public void onSubmitRequestButtonPressed(ActionEvent event) {
-        processFinancialInfo();
+        processCreditRequest();
         screens.toPostRequestPage();
     }
 
-    private void processFinancialInfo() {
-        FinancialInfo financial = financialInfo != null ? financialInfo : new FinancialInfo();
-        financial.setUserId(session.getUserId());
-        financial.setMoneyAmount(Long.parseLong(moneyField.getText()));
-        financial.setInterestPercentage(Integer.parseInt(interestField.getText()));
-        financial.setTimeRange(Integer.parseInt(timeField.getText()));
-        financial.setJob(jobField.getText());
-        financial.setSalary(Integer.parseInt(salaryField.getText()));
-        financial.setFinancialReport(financialReportArea.getText());
-        financial.setValidated(null);
-        financialInfoService.upsertFinancialInfo(financial);
+    private void processCreditRequest() {
+        CreditRequest credit = creditRequest != null ? creditRequest : new CreditRequest();
+        credit.setUserId(session.getUserId());
+        credit.setMoneyAmount(Long.parseLong(moneyField.getText()));
+        credit.setInterestPercentage(Integer.parseInt(interestField.getText()));
+        credit.setTimeRange(Integer.parseInt(timeField.getText()));
+        credit.setJob(jobField.getText());
+        credit.setSalary(Integer.parseInt(salaryField.getText()));
+        credit.setFinancialReport(financialReportArea.getText());
+        credit.setValidated(null);
+        creditRequestService.upsertCreditRequest(credit);
     }
 }

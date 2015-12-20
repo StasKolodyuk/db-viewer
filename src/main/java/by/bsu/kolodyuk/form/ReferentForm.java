@@ -2,15 +2,14 @@ package by.bsu.kolodyuk.form;
 
 
 import by.bsu.kolodyuk.ScreensConfig;
-import by.bsu.kolodyuk.model.FinancialInfo;
+import by.bsu.kolodyuk.model.CreditRequest;
 import by.bsu.kolodyuk.model.Session;
-import by.bsu.kolodyuk.repository.FinancialInfoRepository;
-import by.bsu.kolodyuk.service.FinancialInfoService;
-import javafx.collections.FXCollections;
+import by.bsu.kolodyuk.service.CreditRequestService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 
 import javax.annotation.Resource;
@@ -27,36 +26,37 @@ public class ReferentForm extends NavigableForm implements Initializable {
     @FXML
     private Label statusLabel;
     @FXML
-    private Accordion financialInfoAccordion;
+    private Accordion creditRequestAccordion;
     @FXML
-    private List<FinancialInfo> toValidate;
+    private List<CreditRequest> toValidate;
 
     @Resource
-    private FinancialInfoService financialInfoService;
+    private CreditRequestService creditRequestService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        toValidate = financialInfoService.getNotValidatedFinancialInfos();
+        toValidate = creditRequestService.getNotValidatedCreditRequests();
         if(toValidate.isEmpty()) {
             statusLabel.setText("No Financial Reports to Validate");
         } else {
             statusLabel.setText("Validate the following Financial Reports");
         }
-        toValidate.forEach(f -> financialInfoAccordion.getPanes().add(createTitledPane(f)));
+        toValidate.forEach(f -> creditRequestAccordion.getPanes().add(createTitledPane(f)));
     }
 
     @FXML
     public void onValidateReportsButtonPressed(ActionEvent event) {
-        financialInfoService.updateFinancialInfos(toValidate);
+        creditRequestService.updateCreditRequests(toValidate);
         screens.toReferentPage();
     }
 
-    private TitledPane createTitledPane(FinancialInfo financialInfo) {
+    private TitledPane createTitledPane(CreditRequest creditRequest) {
         TitledPane titledPane = new TitledPane();
-        titledPane.setText("UserId: " + financialInfo.getUserId());
+        titledPane.setText("UserId: " + creditRequest.getUserId());
+        VBox vBox = new VBox();
         TextFlow textFlow = new TextFlow();
 
-        Label label = new Label(financialInfo.toString());
+        Label label = new Label(creditRequest.toString());
         label.setWrapText(true);
         textFlow.getChildren().add(label);
 
@@ -67,9 +67,9 @@ public class ReferentForm extends NavigableForm implements Initializable {
         isValidCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue == true) {
                 rejectCheckBox.setSelected(false);
-                financialInfo.setValidated(true);
+                creditRequest.setValidated(true);
             } else {
-                financialInfo.setValidated(null);
+                creditRequest.setValidated(null);
             }
         });
         textFlow.getChildren().add(isValidCheckBox);
@@ -78,21 +78,23 @@ public class ReferentForm extends NavigableForm implements Initializable {
         rejectCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == true) {
                 isValidCheckBox.setSelected(false);
-                financialInfo.setValidated(false);
+                creditRequest.setValidated(false);
             } else {
-                financialInfo.setValidated(null);
+                creditRequest.setValidated(null);
             }
         });
         textFlow.getChildren().add(rejectCheckBox);
 
         Button creditHistoryButton = new Button("View Credit History");
         creditHistoryButton.setOnAction(e -> {
-            session.setUserUnderValidationId(financialInfo.getUserId());
+            session.setUserUnderValidationId(creditRequest.getUserId());
             screens.toCreditHistoryPage();
         });
-        textFlow.getChildren().add(creditHistoryButton);
+        vBox.getChildren().add(textFlow);
+        vBox.getChildren().add(creditHistoryButton);
 
-        titledPane.setContent(textFlow);
+        titledPane.setContent(vBox);
+
         return titledPane;
     }
 }

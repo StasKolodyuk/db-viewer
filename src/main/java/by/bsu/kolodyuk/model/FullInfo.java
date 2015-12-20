@@ -5,27 +5,22 @@ import java.util.List;
 
 public class FullInfo {
 
-    private FinancialInfo financialInfo;
+    private CreditRequest creditRequest;
     private AccountInfo accountInfo;
     private List<CreditInfo> creditHistrory;
 
-    public FullInfo(FinancialInfo financialInfo, AccountInfo accountInfo, List<CreditInfo> creditHistrory) {
-        this.financialInfo = financialInfo;
+    public FullInfo(CreditRequest creditRequest, AccountInfo accountInfo, List<CreditInfo> creditHistrory) {
+        this.creditRequest = creditRequest;
         this.accountInfo = accountInfo;
         this.creditHistrory = creditHistrory;
     }
 
-    public FinancialInfo getFinancialInfo() {
-        return financialInfo;
+    public CreditRequest getCreditRequest() {
+        return creditRequest;
     }
 
-    public void setFinancialInfo(FinancialInfo financialInfo) {
-        this.financialInfo = financialInfo;
-    }
-
-    public FullInfo setFinancialInfoAndReturn(FinancialInfo financialInfo) {
-        this.financialInfo = financialInfo;
-        return this;
+    public void setCreditRequest(CreditRequest creditRequest) {
+        this.creditRequest = creditRequest;
     }
 
     public AccountInfo getAccountInfo() {
@@ -36,11 +31,6 @@ public class FullInfo {
         this.accountInfo = accountInfo;
     }
 
-    public FullInfo setAccountInfoAndReturn(AccountInfo accountInfo) {
-        this.accountInfo = accountInfo;
-        return this;
-    }
-
     public List<CreditInfo> getCreditHistrory() {
         return creditHistrory;
     }
@@ -49,17 +39,9 @@ public class FullInfo {
         this.creditHistrory = creditHistrory;
     }
 
-    public void setCreditHistroryAndReturn(List<CreditInfo> creditHistrory) {
-        this.creditHistrory = creditHistrory;
-    }
-
-    public Long getUserId() {
-        return accountInfo != null ? accountInfo.getUserId() : -1;
-    }
-
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder(financialInfo.toString());
+        StringBuilder result = new StringBuilder(creditRequest.toString());
 
         result.append("Account Info ID: " + accountInfo.getAccountId() + "\n");
         result.append("Current Money Amount: " + accountInfo.getMoneyAmount() + "\n");

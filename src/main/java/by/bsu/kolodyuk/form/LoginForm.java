@@ -2,8 +2,10 @@ package by.bsu.kolodyuk.form;
 
 
 import by.bsu.kolodyuk.ScreensConfig;
+import by.bsu.kolodyuk.model.CreditConditions;
 import by.bsu.kolodyuk.model.Session;
 import by.bsu.kolodyuk.model.User;
+import by.bsu.kolodyuk.service.CreditConditionsService;
 import by.bsu.kolodyuk.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +30,8 @@ public class LoginForm extends NavigableForm {
 
     @Resource
     private UserService userService;
+    @Resource
+    private CreditConditionsService creditConditionsService;
 
 
     @FXML
@@ -43,7 +47,12 @@ public class LoginForm extends NavigableForm {
         session.setUserType(user.getUserType());
         switch(user.getUserType()) {
             case SIMPLE:
-                screens.toPostRequestPage();
+                CreditConditions creditConditions = creditConditionsService.getCreditConditions(session.getUserId());
+                if(creditConditions != null) {
+                    screens.toResultPage();
+                } else {
+                    screens.toPostRequestPage();
+                }
                 break;
             case REFERENT:
                 screens.toReferentPage();
