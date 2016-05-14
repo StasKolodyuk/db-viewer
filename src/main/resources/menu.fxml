@@ -13,7 +13,6 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onQueriesButtonPressed" text="Queries" />
                   <Button fx:id="tablesButton" mnemonicParsing="false" onAction="#onTablesButtonPressed" text="Tables" />
-                  <Button fx:id="formsButton" mnemonicParsing="false" onAction="#onFormsButtonPressed" text="Forms" />
                </children>
                 </VBox>
             </children>

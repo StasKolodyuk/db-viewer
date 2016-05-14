@@ -27,7 +27,7 @@ public class ScreensConfig {
 
     public void showMainScreen() {
         root = new StackPane();
-        stage.setTitle("Bank System");
+        stage.setTitle("DB Viewer");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -49,28 +49,59 @@ public class ScreensConfig {
         toTop(getNode(resultController(), "result.fxml"));
     }
 
+    public void toTablesPage() {
+        toTop(getNode(tablesController(), "tables.fxml"));
+    }
+
+    public void toAddEntryPage() {
+        toTop(getNode(addEntryController(), "add.fxml"));
+    }
+
+    public void toUpdateEntryPage() {
+        toTop(getNode(updateEntryController(), "update.fxml"));
+    }
+
+
     @Bean
     @Scope("prototype")
     MenuController menuController() {
-        return new MenuController(this);
+        return new MenuController();
+    }
+
+    @Bean
+    @Scope("prototype")
+    TablesController tablesController() {
+        return new TablesController();
     }
 
     @Bean
     @Scope("prototype")
     QueriesController queriesController() {
-        return new QueriesController(this);
+        return new QueriesController();
     }
 
     @Bean
     @Scope("prototype")
     ResultController resultController() {
-        return new ResultController(this);
+        return new ResultController();
     }
 
-    private Node getNode(final NavigableController form, String view) {
+    @Bean
+    @Scope("prototype")
+    AddEntryController addEntryController() {
+        return new AddEntryController();
+    }
+
+    @Bean
+    @Scope("prototype")
+    UpdateEntryController updateEntryController() {
+        return new UpdateEntryController();
+    }
+
+    private Node getNode(Object controller, String view) {
         URL location = this.getClass().getClassLoader().getResource(view);
         FXMLLoader loader = new FXMLLoader(location);
-        loader.setControllerFactory(clazz -> form);
+        loader.setControllerFactory(clazz -> controller);
         try {
             return (Node) loader.load();
         } catch (Exception e) {

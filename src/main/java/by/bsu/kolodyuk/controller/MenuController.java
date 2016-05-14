@@ -4,11 +4,12 @@ import by.bsu.kolodyuk.ScreensConfig;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class MenuController extends NavigableController {
+import javax.annotation.Resource;
 
-    public MenuController(ScreensConfig screens) {
-        super(screens);
-    }
+public class MenuController {
+
+    @Resource
+    ScreensConfig screens;
 
     @FXML
     public void onQueriesButtonPressed(ActionEvent event) {
@@ -17,16 +18,6 @@ public class MenuController extends NavigableController {
 
     @FXML
     public void onTablesButtonPressed(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void onFormsButtonPressed(ActionEvent event) {
-
-    }
-
-    @FXML
-    public void onBackButtonPressed(ActionEvent event) {
-        screens.toMenuPage();
+        screens.toTablesPage();
     }
 }

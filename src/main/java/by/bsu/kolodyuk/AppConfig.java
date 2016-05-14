@@ -26,6 +26,13 @@ public class AppConfig {
     private Environment env;
 
     @Bean
+    Session session() {
+        Session session = new Session();
+        session.setSchema("LAB1");
+        return session;
+    }
+
+    @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
